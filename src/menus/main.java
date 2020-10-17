@@ -14,7 +14,7 @@ public class main {
 	static int tabuleiroJogador1[][], tabuleirojogador2[][];
 	static Scanner obj = new Scanner(System.in);
 	
-	public static void obterTamanhoDsTabuleiros() {
+	public static void obterTamanhoDosTabuleiros() {
 	Scanner obj = null;
 	
 		//For infinito
@@ -64,13 +64,17 @@ public class main {
 	public static int[][] retornarNovoTabuleiroComOsNavios() { 
 		int novoTabuleiro[][] = retornarNovoTabuleiroVazio();
 		int quantidadeRestanteDeNavios = quantidadeDeNavios;  
+		int x = 0, y = 0;
 		Random numeroAleatorio = new Random();
 		do {
+			x = 0;
+			y = 0;
 			for(int[] linha : novoTabuleiro) {
 				for(int coluna : linha) {
 					if(numeroAleatorio.nextInt(100) <= 10) {
 						if(coluna == 0) { 
-							coluna = 1;
+							novoTabuleiro[x][y] = 1;
+							
 							quantidadeRestanteDeNavios--; 
 							break;
 						}
@@ -78,7 +82,10 @@ public class main {
 							break;
 						}
 					}
+					y++;
 				}
+				y = 0;
+				x++;
 				if(quantidadeRestanteDeNavios <= 0) {
 					break;
 				}
@@ -91,23 +98,29 @@ public class main {
 		tabuleiroJogador1 = retornarNovoTabuleiroComOsNavios();
 		tabuleirojogador2 = retornarNovoTabuleiroComOsNavios();
 	}
-
 	
-	public static void main(String[] args) {
-		
-		obterTamanhoDsTabuleiros();
-		calcularQuantidadeMaximaDeNaviosNoJogo();
-		iniciandoOsTamanhosDosTabuleiros();
-		obterQuantidadeDeNaviosNoJogo();
-		inserirOsNaviosNosTabuleirosDosJogadores();
-		//
-		
+	public static void exibirLetrasDasColunasDoTabuleiro() {
+		char letraDaColuna = 65;
+		String letrasDoTabuleiro = "   ";			
+		for(int i = 0; i < tamanhoY; i++) {
+			letrasDoTabuleiro += (letraDaColuna++) + " ";
+		}
+		System.out.println(letrasDoTabuleiro);
+	}
+	
+	public static void exibirTabuleiro() {
 		System.out.println("|----- Jogador 1 -----");
 		String linhaDoTabuleiro = "";
+		exibirLetrasDasColunasDoTabuleiro();
 		boolean seuTabuleiro = true;
 		int numeroDaLinha = 1;
 		for(int[] linha : tabuleiroJogador1) {
-			linhaDoTabuleiro = (numeroDaLinha++) +  " |";
+			if(numeroDaLinha < 10) {
+				linhaDoTabuleiro = (numeroDaLinha++) +  " |";	
+			}else {
+				linhaDoTabuleiro = (numeroDaLinha++) +  "|";
+			}
+			
 			for(int coluna : linha) {
 				switch (coluna) {
 				case 0: //Vazio ou sem ação
@@ -115,7 +128,7 @@ public class main {
 					break;
 				case 1: //Navio
 					if(seuTabuleiro) {
-					linhaDoTabuleiro += " N|"; 
+					linhaDoTabuleiro += "N|"; 
 					break;
 					} else {
 						linhaDoTabuleiro += " |"; 
@@ -131,6 +144,22 @@ public class main {
 			}	
 			System.out.println(linhaDoTabuleiro);
 		}
+		
+		
+	}
+
+	
+	public static void main(String[] args) {
+		
+		obterTamanhoDosTabuleiros();
+		calcularQuantidadeMaximaDeNaviosNoJogo();
+		iniciandoOsTamanhosDosTabuleiros();
+		obterQuantidadeDeNaviosNoJogo();
+		inserirOsNaviosNosTabuleirosDosJogadores();
+		exibirTabuleiro(); 
+		
+		
+		
 		
 		
 		obj.close();
