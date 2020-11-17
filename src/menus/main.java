@@ -10,6 +10,7 @@ public class main {
 	/*
 	 * X = altura, Y = comprimento
 	 */
+	static String nomeJogador1, nomeJogador2;
 	static int tamanhoX, tamanhoY, quantidadeDeNavios, limiteMaximoDeNavios;
 	static int tabuleiroJogador1[][], tabuleirojogador2[][];
 	static Scanner obj = new Scanner(System.in);
@@ -24,7 +25,7 @@ public class main {
 				obj = new Scanner(System.in);
 				System.out.println("Digite a altura do tabuleiro: ");
 				tamanhoX = obj.nextInt();
-				System.out.println("Digite o tamanho do tabuleiro: ");
+				System.out.println("Digite o comprimento do tabuleiro: ");
 				tamanhoY = obj.nextInt();
 				tudoOk = true;
 			}catch (InputMismatchException erro) {
@@ -35,6 +36,13 @@ public class main {
 			}
 			
 				}
+	}
+	
+	public static void obterNomesDosJogadores() {
+		System.out.println("Digite o nome do jogador 1: ");
+		nomeJogador1 = obj.next();
+		System.out.println("Digite o nome do jogador 2: ");
+		nomeJogador2 = obj.next();
 	}
 	
 	public static void calcularQuantidadeMaximaDeNaviosNoJogo() {
@@ -108,13 +116,12 @@ public class main {
 		System.out.println(letrasDoTabuleiro);
 	}
 	
-	public static void exibirTabuleiro() {
-		System.out.println("|----- Jogador 1 -----");
+	public static void exibirTabuleiro(String nomeDoJogador, int[][] tabuleiro, boolean seuTabuleiro) {
+		System.out.println("|----- " + nomeDoJogador +  " -----|");
 		String linhaDoTabuleiro = "";
 		exibirLetrasDasColunasDoTabuleiro();
-		boolean seuTabuleiro = true;
 		int numeroDaLinha = 1;
-		for(int[] linha : tabuleiroJogador1) {
+		for(int[] linha : tabuleiro) {
 			if(numeroDaLinha < 10) {
 				linhaDoTabuleiro = (numeroDaLinha++) +  " |";	
 			}else {
@@ -144,19 +151,39 @@ public class main {
 			}	
 			System.out.println(linhaDoTabuleiro);
 		}
-		
+	}
+	
+	public static void exibirTabuleirosDosJogadores() {
+		exibirTabuleiro(nomeJogador1, tabuleiroJogador1, true);
+		exibirTabuleiro(nomeJogador2, tabuleirojogador2, false);
 		
 	}
 
 	
 	public static void main(String[] args) {
-		
+		//TODO
+		obterNomesDosJogadores();
 		obterTamanhoDosTabuleiros();
 		calcularQuantidadeMaximaDeNaviosNoJogo();
 		iniciandoOsTamanhosDosTabuleiros();
 		obterQuantidadeDeNaviosNoJogo();
 		inserirOsNaviosNosTabuleirosDosJogadores();
-		exibirTabuleiro(); 
+		exibirTabuleirosDosJogadores();
+		
+		System.out.println("Digite a posição do seu tiro: ");
+		String tiroDoJogador = obj.next();
+		//Verificações
+		int quantidadeDeNumeros = (tamanhoY > 10) ? 2 : 1;
+		String expressaoDeVerificacao = "^[A-Za-z]{1}[0-9]{"
+				+ quantidadeDeNumeros + "}$";
+		if(tiroDoJogador.matches(expressaoDeVerificacao)) {
+			String tiro = tiroDoJogador.toLowerCase();
+			char posicaoX = tiro.charAt(0);
+			int posicaoY = Integer.parseInt(tiro.substring(1));
+			
+		}else {
+			System.out.println("ERRO");
+		}
 		
 		
 		
